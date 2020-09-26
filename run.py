@@ -8,10 +8,10 @@ import casbin
 from tools.sync_policy import syncPolicy
 from logger.logger import logger
 
-urls = {
+urls = (
     "/powerFactor", "PowerFactor",
-}
-
+)
+    
 app = web.application(urls, globals())
 dom = 'rde'
 obj = 'rde'
