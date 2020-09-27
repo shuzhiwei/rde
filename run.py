@@ -2,10 +2,9 @@ import web
 import json
 import requests
 import traceback
-import threading
 import jwt, time
 import casbin
-from tools.sync_policy import syncPolicy
+import os, configparser
 from logger.logger import logger
 
 urls = (
@@ -13,7 +12,12 @@ urls = (
 )
     
 app = web.application(urls, globals())
-dom = 'rde'
+parent_dir = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
+config = configparser.ConfigParser()
+full_path = parent_dir + '/confs/config.ini'
+config.read(full_path)
+dom = config.get('acs', 'domain')
+# dom = 'rde'
 obj = 'rde'
 
 class PowerFactor:
@@ -50,8 +54,5 @@ class PowerFactor:
             return json.dumps({'code': 500, 'message': 'fail'})
 
 if __name__ == "__main__":
-    t1 = threading.Thread(target=syncPolicy, args=(dom,))
-    logger.debug('start thread sync policy ...')
-    t1.start()
     logger.debug('start run app ...')
     app.run()
