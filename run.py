@@ -5,6 +5,8 @@ import traceback
 import jwt, time
 import casbin
 import os, configparser
+import threading
+from tools.sync_policy import syncPolicy
 from logger.logger import logger
 
 urls = (
@@ -54,5 +56,8 @@ class PowerFactor:
             return json.dumps({'code': 500, 'message': 'fail'})
 
 if __name__ == "__main__":
+    t1 = threading.Thread(target=syncPolicy, args=(dom,))
+    logger.debug('start thread sync policy ...')
+    t1.start()
     logger.debug('start run app ...')
     app.run()
