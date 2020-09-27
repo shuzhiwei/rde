@@ -16,3 +16,6 @@ restart:
 	--restart=always --cpus 1 -m 1024m \
 	-v /opt/data/docker-apps-logs/$(PROJECT_NAME)/:/tmp/ \
 	$(PROJECT_NAME):$(VERSION)
+
+clean:
+	docker images | grep none | awk '{print $$3}' | xargs docker rmi 
